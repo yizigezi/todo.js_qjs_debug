@@ -1,0 +1,7 @@
+[
+      {name: "我爱钱显康", uniqueId: 1, finish: 0},
+      {name: "康", uniqueId: 2, finish: 1},
+      {name: "恩情无限", uniqueId: 3, finish: 1},
+      {name: "恩情啊", uniqueId: 4, finish: 0},
+      {name: "怀念僵菌", uniqueId: 5, finish: 1}
+    ]

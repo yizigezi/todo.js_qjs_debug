@@ -1,0 +1,13 @@
+<script>
+
+export default {
+  onCreate() {
+  },
+  onDestroy() {
+    console.log("app destroyed")
+  },
+  data: {
+    a: 0
+  }
+}
+</script>
