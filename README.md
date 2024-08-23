@@ -1,3 +1,15 @@
+# Cora待办
+Developed by 2minRain, wuhaiqi 
+
+(C)2024, CoraTech Workspace
+
+## 功能
+1. 支持手环添加待办
+2. 支持设置优先级, 截止日期
+3. 支持设置多种预设快速添加待办
+
+## 更新日志
+
 ## 快速上手
 
 ### 1. 开发
