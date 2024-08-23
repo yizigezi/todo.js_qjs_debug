@@ -1,5 +1,5 @@
 {
-  "package": "org.cora.wear.todo",
+  "package": "cora.wear.todo",
   "name": "Cora待办",
   "versionName": "0.0.1",
   "versionCode": 1,
@@ -42,6 +42,9 @@
       },
       "pages/pic-ker": {
         "component": "pic-ker"
+      },
+      "pages/more": {
+        "component": "more"
       }
     }
   }

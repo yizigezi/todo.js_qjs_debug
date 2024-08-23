@@ -89,9 +89,9 @@ export default {
     },
     onClick(id) {
       console.log(`Navigating to page: pages/3`);
-      router.push({
-        uri: "pages/page3"
-      });
+      router.replace({
+      uri: "pages/page4"
+    })
     }
   }
 </script>

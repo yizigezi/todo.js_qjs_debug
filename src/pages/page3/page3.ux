@@ -4,7 +4,7 @@
     <text class="time-display" @click="terminate()">{{ currentTime }}</text>
     <text style="height: 48px;top: {{ pageh }}px"></text>
     <div class="row">
-      <div class="button" for="(index, item) in list" tid="uniqueId">
+      <div class="button" for="(index, item) in list" tid="uniqueId" @click="goto(item)">
         <image src="/common/check{{item.finish}}.png" class="finish" @click="Checkb(item)"></image>
         <text class="tit">{{ item.name }}</text>
       </div>
@@ -116,7 +116,7 @@ export default {
     buttontop: 381,
     pageh: 490 - 61,
     pic: '114514',
-    list: [{name: '114514',uniqueId: 1,finish: 1}]
+    list: []
   },
   onDestroy() {
     this.savelist();
@@ -150,9 +150,18 @@ export default {
   onClick() {
     console.log(`Navigating to page: pages/4`);
     this.savelist()
-    router.push({
-      uri: "pages/page4"
-    });
+    router.replace({
+      uri: "pages/page2"
+    })
+  },
+  goto(item) {
+    this.savelist()
+    router.replace({
+      uri: "pages/more",
+      params: {
+        item: item
+      }
+    })
   },
   loadlist() {
     file.readText({

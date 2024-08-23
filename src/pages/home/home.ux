@@ -89,7 +89,7 @@ top: 381px;
     onClick() {
       console.log(`Navigating to page: pages/page3`);
       router.push({
-        uri: "pages/page2"
+        uri: "pages/page3"
       });
     }
   }
