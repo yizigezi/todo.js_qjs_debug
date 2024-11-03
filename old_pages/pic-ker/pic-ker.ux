@@ -1,0 +1,143 @@
+<import name="input-method" src="../../components/InputMethod/InputMethod.ux"></import>
+
+<template>
+  <div class="page" style="flex-direction: column">
+    <picker 
+    class="picker" 
+    type="text" 
+    range="{{yearlist}}" 
+    selected="0" 
+    onchange="onyearChange">
+  </picker>
+  
+  <picker 
+    class="picker" 
+    type="text" 
+    range="{{monthlist}}" 
+    selected="5" 
+    onchange="onmonthChange">
+  </picker>
+ 
+  <picker 
+    class="picker" 
+    type="text" 
+    range="{{daylist}}" 
+    selected="20" 
+    onchange="ondayChange">
+  </picker>
+  <div class="line" style="top: 260px;"></div>
+  <div class="line" style="top: 130px;"></div>
+  <text class="time-display">{{year}}/{{month}}/{{day}}</text>
+  <image src="/common/yes.png" class="button-image" @click="backto()"></image>
+  </div>
+</template>
+
+<script>
+import router from "@system.router"
+export default {
+  private: {
+    year: '2024',
+    month: '6',
+    day: '21',
+    yearlist: ['2024','2025','2026','2027','2028'],
+    daylist: ['1','2','3','4','5','6','7','8','9','10','11','12','13','14','15','16','17','18','19','20','21','22','23','24','25','26','27','28','29','30','31'],
+    monthlist: ['1','2','3','4','5','6','7','8','9','10','11','12'],
+  },
+  public: {
+    textValue: '还恩情',
+    youxian: '低'
+  },
+  onInit() {
+
+
+  },
+  onyearChange(e) {
+      this.year = e.newValue;
+  },
+  ondayChange(e) {
+      this.day = e.newValue;
+  },
+  onmonthChange(e) {
+      this.month = e.newValue;
+  },
+  backto() {
+    router.replace({
+  uri: '/pages/page4',
+  params: {
+    textValue: this.textValue,
+    year: this.year,
+    day: this.day,
+    month: this.month,
+    youxian: this.youxian
+  }
+})
+  }
+}
+</script>
+
+<style>
+.page {
+  position: absolute;
+  width: 192px;
+  height: 490px;
+  background-color: black;
+}
+
+.time-display {
+  position: absolute;
+  left: 0px;
+  top: 395px;
+  width: 192px;
+  font-size: 20px;
+  font-weight: normal;
+  text-align: center;
+  color: #ffffff;
+}
+
+.text {
+  position: absolute;
+left: 7px;
+top: 0px;
+width: 171px;
+height: 60px;
+opacity: 1;
+font-size: 23px;
+font-weight: bold;
+display: flex;
+align-items: center;
+color: #CAC4D0;
+	
+}
+
+.picker {
+  height: 130px;
+    font-size: 20px;
+    color: #646464;
+    selected-font-size: 25px;
+    selected-color: rgb(255, 255, 255);
+  }
+.line{
+position: absolute;
+left: 0px;
+width: 192px;
+height: 1px;
+opacity: 1;
+	
+background-color: #ffffff;
+}
+.button-image{
+  position: absolute;
+  left: 25px;
+  top: 428px;
+}
+.tips {
+  position: absolute;
+  left: 6px;
+  
+  width: 82px;
+  font-size: 20px;
+  font-weight: bold;
+
+  color: #ffffff;
+}
+</style>

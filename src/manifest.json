@@ -1,6 +1,6 @@
 {
   "package": "cora.wear.todo",
-  "name": "Cora待办",
+  "name": "Todo.js Debug Tool",
   "versionName": "0.0.1",
   "versionCode": 1,
   "minPlatformVersion": 1000,
@@ -27,25 +27,7 @@
     "pages": {
       "pages/home": {
         "component": "home"
-      },
-      "pages/page2": {
-        "component": "page2"
-      },
-      "pages/page3": {
-        "component": "page3"
-      },
-      "pages/page4": {
-        "component": "page4"
-      },
-      "pages/about": {
-        "component": "about"
-      },
-      "pages/pic-ker": {
-        "component": "pic-ker"
-      },
-      "pages/more": {
-        "component": "more"
       }
     }
-  }
+  } 
 }

@@ -1,0 +1,220 @@
+<template>
+  <div class="page">
+    <text class="pagetitle">Cora待办</text>
+    <text class="time-display" @click="terminate()">{{ currentTime }}</text>
+    <text style="height: 48px;top: {{ pageh }}px"></text>
+    <div class="row">
+      <div class="button1" for="(index, item) in list" tid="uniqueId">
+        <div class="button" @click="goto(item)"><text class="tit">{{ item.name }}</text></div>
+        <image src="/common/check{{item.finish}}.png" class="finish" @click="Checkb(item)"></image>
+      </div>
+    </div>
+    <image src="/common/{{pic}}.png" class="button-image" style="top: {{buttontop}}px" @click="onClick()"></image>
+  </div>
+</template>
+
+<style>
+.page {
+  display: flex;
+  background-color: #000000;
+  flex-direction: column;
+  align-items: center;
+  /* 中心对齐所有内容 */
+  width: 100%;
+  /* 充分利用可用宽度 */
+}
+
+.time-display {
+  position: absolute;
+  left: 0px;
+  top: 19px;
+  width: 192px;
+  font-size: 20px;
+  font-weight: normal;
+  text-align: center;
+  color: #ffffff;
+}
+
+.pagetitle {
+  position: absolute;
+  left: 0px;
+  top: 44px;
+  width: 192px;
+  font-size: 24px;
+  font-weight: bold;
+  text-align: center;
+  color: #ffffff;
+}
+
+.tit {
+  position: absolute;
+  left: 50px;
+  top: 22px;
+  width: 130px;
+  height: 24px;
+  opacity: 1;
+
+  font-size: 23px;
+  font-weight: bold;
+  line-height: 24px;
+  color: #ffffff;
+}
+
+.button-image {
+  position: absolute;
+  left: 27px;
+}
+
+.button {
+  position: absolute;
+  left: 0px;
+  width: 180px;
+  height: 69px;
+  border-radius: 22px;
+  opacity: 1;
+  background-color: #323232;
+}
+.button1 {
+  position: relative;
+  left: 0px;
+  width: 180px;
+  height: 69px;
+  opacity: 1;
+  margin-bottom: 13px;
+}
+
+.finish {
+  position: absolute;
+  left: 13px;
+  top: 20px;
+}
+
+.row {
+  position: absolute;
+  left: 0px;
+  top: 89px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  width: 192px;
+}
+</style>
+
+<script>
+import router from "@system.router"
+import prompt from "@system.prompt"
+import file from '@system.file' 
+export default {
+  Checkb(item1) {
+    this.list.forEach((item) => {
+      if (item.uniqueId === item1.uniqueId) {
+        item.finish = item.finish === 1 ? 0 : 1;
+      }
+    });
+    this.savelist();
+    //this.$forceUpdate(); // 强制更新视图
+  },
+  terminate() {
+    router.back();
+    this.savelist();
+  },
+  private: {
+    currentTime: "",
+    buttontop: 381,
+    pageh: 490 - 61,
+    pic: '114514',
+    list: []
+  },
+  onDestroy() {
+    this.savelist();
+  },
+  onInit() {
+    this.loadlist();
+    this.updateTime();
+    setInterval(() => {
+      this.updateTime();
+    }, 1000); // 更新时间间隔
+
+    if (this.list.length > 3) {
+          this.buttontop = this.list.length * 82 + 89 + 17;
+      this.pageh = this.list.length * 82 + 89 + 17 + 61;
+      this.pic = 'new'
+    } else {
+      this.buttontop = 381;
+      this.pageh = 490 - 48;
+      this.pic = 'new'
+      
+    }
+  },
+  updateTime() {
+    const now = new Date();
+    let hours = now.getHours();
+    let minutes = now.getMinutes();
+    hours = hours < 10 ? "0" + hours : hours;
+    minutes = minutes < 10 ? "0" + minutes : minutes;
+    this.currentTime = `${hours}:${minutes}`;
+  },
+  onClick() {
+    console.log(`Navigating to page: pages/4`);
+    this.savelist()
+    router.replace({
+      uri: "/pages/page2"
+    })
+  },
+  goto(item) {
+    this.savelist()
+    router.replace({
+      uri: "/pages/more",
+      params: {
+        item: item
+      }
+    })
+  },
+  loadlist() {
+    file.readText({
+      uri: 'internal://files/cora-todolist.txt',
+      success: (data) => {
+        this.list = JSON.parse(data.text) || [];
+        console.log(this.list);
+
+
+        if (this.list.length > 3) {
+          this.buttontop = this.list.length * 82 + 89 + 17;
+      this.pageh = this.list.length * 82 + 89 + 17 + 61;
+      this.pic = 'new'
+    } else {
+      this.buttontop = 381;
+      this.pageh = 490 - 48;
+      this.pic = 'new'
+      
+    }
+    console.log(data);
+        //this.$forceUpdate(); // 强制更新视图
+      },
+      fail: (data, code) => {
+        console.log(`handling fail, code = ${code}`);
+        prompt.showToast({
+  message: `加载失败，错误码${code}`,
+  duration: 1500
+})
+      }
+    });
+  },
+  savelist() {
+    file.writeText({
+      uri: 'internal://files/cora-todolist.txt',
+      text: JSON.stringify(this.list),
+      success: () => {
+        console.log('保存成功');
+      },
+      fail: (data, code) => {
+        console.log(`handling fail, code = ${code}`);
+        prompt.showToast({
+  message: `保存失败，错误码${code}`,
+  duration: 1500
+})
+      }
+    });
+  }
+}
+</script>

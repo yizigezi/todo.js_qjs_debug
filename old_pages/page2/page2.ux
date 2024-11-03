@@ -1,0 +1,130 @@
+<template>
+  <div class="page">
+    
+    <text class="pagetitle">使用输入法</text>
+    <text class="time-display" @click="terminate()">{{ currentTime }}</text>
+    <text class="tip">自由添加待办事项
+而无需连接手机</text>
+<image src="/common/start.png" class="button-image" @click="onClick()"></image>
+<image src="/common/tip.png" class="image"></image>
+  </div>
+</template>
+
+<style>  
+.page {
+  display: flex;
+  background-color: #000000;
+  flex-direction: column;
+  align-items: center; /* 中心对齐所有内容 */
+  width: 100%; /* 充分利用可用宽度 */
+}
+.time-display {
+  position: absolute;
+left: 0px;
+top: 19px;
+width: 192px;
+font-size: 20px;
+font-weight: normal;
+text-align: center;
+color: #FFFFFF;
+	
+}
+.pagetitle{
+  position: absolute;
+left: 13px;
+top: 73px;
+width: 120px;
+font-size: 24px;
+font-weight: bold;
+	
+color: #FFFFFF;
+	
+	
+	
+}
+
+
+  .tip {
+position: absolute;
+left: 13px;
+top: 122px;
+width: 168px;
+font-size: 21px;
+font-weight: normal;
+color: #FFFFFF;
+  }
+
+
+  .button-image {
+    position: absolute;
+left: 24px;
+top: 381px;
+  }
+  .image {
+    position: absolute;
+left: 45px;
+top: 220px;
+  }
+
+</style>
+
+<script>
+  
+import router from '@system.router'
+export default {
+  terminate() {
+    router.replace({
+      uri: "/pages/page3",
+    })
+    },
+    private: {
+      currentTime: '',
+    },
+    onInit() {
+      this.updateTime();
+      setInterval(() => {
+        this.updateTime();
+      }, 1000); // 更新时间间隔
+    },
+    updateTime() {
+      const now = new Date();
+      let hours = now.getHours();
+      let minutes = now.getMinutes();
+      hours = hours < 10 ? '0' + hours : hours;
+      minutes = minutes < 10 ? '0' + minutes : minutes;
+      this.currentTime = `${hours}:${minutes}`;
+    },
+    savelist() {
+    file.writeText({
+      uri: "internal://files/first.txt",
+      text: JSON.stringify(this.list),
+      success: () => {
+        console.log(this.list)
+      },
+      fail: (data, code) => {
+        console.log(`handling fail, code = ${code}`)
+        prompt.showToast({
+          message: `保存失败，错误码${code}`,
+          duration: 1500
+        })
+      }
+    })
+  },
+  loadList() {
+    file.readText({
+      uri: "internal://files/first.txt",
+      success: (data) => {
+        this.list = data.text
+        console.log(this.list)
+
+      }
+    })
+  },
+    onClick(id) {
+      console.log(`Navigating to page: pages/3`);
+      router.replace({
+      uri: "/pages/page4"
+    })
+    }
+  }
+</script>

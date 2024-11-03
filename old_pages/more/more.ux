@@ -1,0 +1,183 @@
+<template>
+  <div class="page" style="flex-direction: column">
+    <text class="pagetitle">待办详情</text>
+    <text class="time-display" @click="terminate()">{{ currentTime }}</text>
+    <div class="bigdiv">
+      <text class="text">{{ item.name }}</text>
+      <text class="minititle1">提醒时间</text>
+      <text class="tips">优先级</text>
+      <text class="date">{{ item.date }}</text>
+      <text class="level">{{ item.youxian }}</text>
+      <image src="/common/del.png" class="button-image" @click="onClick11()"></image>
+    </div>
+   
+    
+  </div>
+</template>
+
+<script>
+import router from "@system.router"
+import prompt from "@system.prompt"
+import file from "@system.file"
+export default {
+  private: {
+    currentTime: "",
+    list: [],
+  },
+  public: {
+    item: {},
+  },
+  savelist() {
+    file.writeText({
+      uri: "internal://files/cora-todolist.txt",
+      text: JSON.stringify(this.list),
+      success: () => {
+        console.log(this.list+'55555555555555555555555555555555555555555555555555')
+      },
+      fail: (data, code) => {
+        console.log(`handling fail, code = ${code}`)
+        prompt.showToast({
+          message: `保存失败，错误码${code}`,
+          duration: 1500
+        })
+      }
+    })
+  },
+  onClick11() {
+    this.list = this.list.filter(item => item.uniqueId !== this.item.uniqueId);
+    this.savelist()
+    this.terminate()
+  },
+  
+  terminate() {
+    router.replace({
+      uri: "/pages/page3",
+    })
+  },
+  onInit() {
+    this.updateTime()
+    setInterval(() => {
+      this.updateTime()
+    }, 1000) // 更新时间间隔
+    this.loadList()
+    this.item=JSON.parse(this.item)
+  },
+  loadList() {
+    file.readText({
+      uri: "internal://files/cora-todolist.txt",
+      success: (data) => {
+        this.list = JSON.parse(data.text) || []
+        console.log(data.text+'111111111111111111111111111111111111111')
+      }
+    })
+  },
+  updateTime() {
+    const now = new Date()
+    let hours = now.getHours()
+    let minutes = now.getMinutes()
+    hours = hours < 10 ? "0" + hours : hours
+    minutes = minutes < 10 ? "0" + minutes : minutes
+    this.currentTime = `${hours}:${minutes}`
+  }
+}
+</script>
+
+<style>
+.page {
+  width: 480px;
+  height: 480px;
+  background-color: black;
+}
+
+.time-display {
+  position: absolute;
+  left: 0px;
+  top: 19px;
+  width: 192px;
+  font-size: 20px;
+  font-weight: normal;
+  text-align: center;
+  color: #ffffff;
+}
+.button-image {
+  position: absolute;
+left: 32px;
+top: 259px;
+}
+.text {
+  position: absolute;
+left: 16px;
+top: 19px;
+width: 112px;
+font-size: 23px;
+font-weight: bold;
+color: #FFFFFF;
+	
+	
+}
+.minititle1{
+  position: absolute;
+left: 13px;
+top: 69px;
+width: 112px;
+font-size: 20px;
+font-weight: bold;
+color: rgba(255, 255, 255, 0.71);
+	
+}
+.date{
+  position: absolute;
+left: 13px;
+top: 100px;
+width: 150px;
+font-size: 20px;
+font-weight: bold;
+color: #FFFFFF;
+	
+	
+}
+.level{
+  position: absolute;
+left: 13px;
+top: 162px;
+width: 108px;
+font-size: 20px;
+font-weight: bold;
+color: #FFFFFF;
+	
+	
+}
+.bigdiv {
+  position: absolute;
+left: 6px;
+top: 83px;
+width: 180px;
+height: 336px;
+border-radius: 28px;
+opacity: 1;
+	
+background-color: #323232;
+	
+}
+
+.pagetitle {
+  position: absolute;
+  left: 0px;
+  top: 44px;
+  width: 192px;
+  font-size: 24px;
+  font-weight: bold;
+  text-align: center;
+  color: #ffffff;
+}
+
+.tips {
+  position: absolute;
+left: 13px;
+top: 131px;
+font-size: 20px;
+font-weight: bold;
+color: rgba(255, 255, 255, 0.71);
+	
+}
+</style>
